@@ -1,0 +1,11 @@
+WITH CTEDropoff
+AS
+(
+SELECT DISTINCT dropoff_latlong FROM  [dbo].[sorted_data] 
+WHERE pickup_Latlong = dropoff_latlong
+)
+SELECT TOP 10 dropoff_latlong, COUNT(dropoff_latlong) AS Tripcount
+FROM [dbo].[sorted_data] 
+WHERE dropoff_latlong NOT IN (SELECT dropoff_latlong FROM CTEDropoff)
+GROUP BY dropoff_latlong
+ORDER BY Tripcount DESC
